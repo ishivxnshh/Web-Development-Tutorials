@@ -1,0 +1,16 @@
+.container {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    border: 2px solid black;
+}
+
+.item {
+    position: absolute;
+}
+
+.top-left { top: 0; left: 0; }
+.top-right { top: 0; right: 0; }
+.bottom-left { bottom: 0; left: 0; }
+.bottom-right { bottom: 0; right: 0; }
+.center { top: 50%; left: 50%; transform: translate(-50%,-50%);}
