@@ -1,0 +1,1 @@
+et p = new Promise(resolve => setTimeout(resolve, ms));
