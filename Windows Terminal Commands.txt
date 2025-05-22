@@ -1,0 +1,39 @@
+ Windows Terminal Commands (CMD / PowerShell)
+
+cd
+→ Prints current directory (CMD)
+→ Get-Location (PowerShell)
+
+cd folder_name
+→ Change directory
+
+dir
+→ List files and folders
+
+mkdir folder_name
+→ Create a new directory
+
+Create a new file
+→ CMD: type nul > filename.txt
+→ PowerShell: New-Item filename.txt
+
+View file content
+→ type filename.txt
+
+Open file in editor
+→ notepad filename.txt
+
+Move or rename a file
+→ move source.txt destination.txt
+
+Copy a file
+→ copy source.txt destination.txt
+
+nvm
+→ nvm (Only works if installed on Windows)
+
+npm
+→ npm (If Node.js is installed)
+
+node
+→ node (To run Node.js)
