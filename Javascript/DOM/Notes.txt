@@ -1,0 +1,19 @@
+FETCHING ELEMENTS
+There are 5 popular methods available for fetching DOM elements - 
+- querySelector
+- querySelectorAll
+- getElementById
+- getElementByClassName
+- getElementsByClassName
+
+UPDATING ELEMENTS
+- .innerHTML - Used for updating the HTML inside an element
+- .textContent - Used for updating the text content inside an element
+
+DELETING ELEMENTS
+- removeChild - Removes a specific node of a parent
+- onclick - function that triggers whenever you click on a button
+
+ADDING ELEMENTS
+- createElement
+- appendChild
