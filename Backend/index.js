@@ -60,8 +60,89 @@ const fs = require("fs");
 const { Command } = require("commander");
 const program = new Command();
 
+const FILE_NAME = "todos.json";
 
+// Helper function to load todos from file
+function loadTodos() {
+  if (!fs.existsSync(FILE_NAME)) {
+    return [];
+  }
+  const data = fs.readFileSync(FILE_NAME, "utf8");
+  return JSON.parse(data);
+}
 
+// Helper function to save todos to file
+function saveTodos(todos) {
+  fs.writeFileSync(FILE_NAME, JSON.stringify(todos, null, 2));
+}
+
+program
+  .name("todo")
+  .description("CLI Todo App using Filesystem")
+  .version("1.0.0");
+
+// Add command
+program
+  .command("add")
+  .description("Add a new todo")
+  .argument("<task>", "The todo task")
+  .action(function (task) {
+    const todos = loadTodos();
+    todos.push({ task: task, done: false });
+    saveTodos(todos);
+    console.log('✅ Added todo: "' + task + '"');
+  });
+
+// List command
+program
+  .command("list")
+  .description("List all todos")
+  .action(function () {
+    const todos = loadTodos();
+    if (todos.length === 0) {
+      console.log("🗒️ No todos found.");
+    } else {
+      todos.forEach(function (todo, index) {
+        const status = todo.done ? "✅" : "❌";
+        console.log((index + 1) + ". " + status + " " + todo.task);
+      });
+    }
+  });
+
+// Mark as done command
+program
+  .command("done")
+  .description("Mark a todo as done")
+  .argument("<index>", "Index of the todo to mark as done")
+  .action(function (index) {
+    const todos = loadTodos();
+    const idx = parseInt(index) - 1;
+    if (idx >= 0 && idx < todos.length) {
+      todos[idx].done = true;
+      saveTodos(todos);
+      console.log("🎉 Marked todo #" + index + " as done");
+    } else {
+      console.log("❌ Invalid index");
+    }
+  });
+
+// Delete command
+program
+  .command("delete")
+  .description("Delete a todo")
+  .argument("<index>", "Index of the todo to delete")
+  .action(function (index) {
+    const todos = loadTodos();
+    const idx = parseInt(index) - 1;
+    if (idx >= 0 && idx < todos.length) {
+      const removed = todos.splice(idx, 1);
+      saveTodos(todos);
+      console.log('🗑️ Deleted todo: "' + removed[0].task + '"');
+    } else {
+      console.log("❌ Invalid index");
+    }
+  });
+
+program.parse();
 
 //------------------------------------------------------------------------------------------------------------------------
-
