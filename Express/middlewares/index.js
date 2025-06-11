@@ -34,5 +34,3 @@ app.get("/ride1", function (req, res) {
 app.listen(3000, () => {
     console.log("Server is running on port http://localhost:3000/");
 });
-
-// node middlewares/index.js
