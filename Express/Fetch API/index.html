@@ -10,6 +10,7 @@
 <body>
     POSTS
     <div id="posts"></div>
+    <button onclick="getRecentPost()">Fetch Latest Posts</button>
     <script>
         async function getRecentPost() {
             // console.log("before sending req");
@@ -21,10 +22,11 @@
             // console.log("req has been processed");
             // document.getElementById("posts").innerHTML = data.body;
 
-            const response = await axios.get("https://jsonplaceholder.typicode.com/posts/1");
-            document.getElementById("posts").innerHTML = response.data.title;
+            //using axios
+            const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
+            for(let i = 0; i < response.data.length; i++)
+                document.getElementById("posts").innerHTML += `<div> ${response.data[i].title} </div>`;
         }
-        getRecentPost();
     </script>
 </body>
 </html>
