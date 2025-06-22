@@ -51,14 +51,26 @@ app.post("/login", (req, res) => {
     console.log(users);
 });
 
-app.get("/me", (req, res) => {
+function auth(req, res, next) {
     const token = req.headers.token;
-    const decodedInformation = jwt.verify(token, JWT_SECRET); // {username: "shivansh@gmail.com"}
-    const username = decodedInformation.username;
+    const decodedData = jwt.verify(token, JWT_SECRET);
 
-    // password is not available here, so just find by username
+    if (decodedData.username) {
+        req.username = decodedData.username;
+        next();
+    } else {
+        res.json({
+            message: "You are not logged in"
+        });
+    }
+}
+
+app.use(auth);
+
+app.get("/me", (req, res) => {
+
     const foundUser = users.find(function (u) {
-        if (u.username === username) {
+        if (u.username === req.username) {
             return true;
         }
         return false;
@@ -75,7 +87,6 @@ app.get("/me", (req, res) => {
         });
     }
 });
-
 
 app.get("/", (req, res) => {
     res.send("Todo List HomePage")
