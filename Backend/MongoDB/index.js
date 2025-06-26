@@ -1,7 +1,9 @@
+const bcrypt = require("bcrypt");
 const express = require("express");
 const { userModel, todoModel } = require("./db");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const zod = require("zod");
 const JWT_SECRET = "ishivansh";
 
 mongoose.connect("mongodb+srv://admin:admin12345@cluster0.m7sfi.mongodb.net/todo-shivansh");
@@ -9,35 +11,66 @@ const app = express();
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
+    const requiredBodySchema = zod.object({
+        email: zod.string().email(),
+        password: zod.string().min(6),
+        name: zod.string().min(1)
+    });
+
+    const parsedDataWithSuccess = requiredBodySchema.safeParse(req.body);
+
+    if (!parsedDataWithSuccess.success) {
+        return res.status(400).json({
+            message: "Invalid input",
+            errors: parsedDataWithSuccess.error
+        });
+    }
+
     const email = req.body.email;
     const password = req.body.password;
     const name = req.body.name;
 
-    await userModel.create({
-        email: email,
-        password: password,
-        name: name
-    })
+    let errorThrown = false;
+    try {
+        const hashedPassword = await bcrypt.hash(password, 5);
 
-    res.json({
-        message: "You are signed up successfully!"
-    })
+        await userModel.create({
+            email: email,
+            password: hashedPassword,
+            name: name
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: "User already exists!"
+        });
+        errorThrown = true;
+    }
+    if (!errorThrown) {
+        res.json({
+            message: "User created successfully!"
+        });
+    }
 });
 
 app.post("/login", async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    const user = await userModel.findOne({
-        email: email,
-        password: password
+    const response = await userModel.findOne({
+        email: email
     });
 
-    console.log(user);
+    if (!response) {
+        return res.status(403).json({
+            message: "User not found!"
+        });
+    }
 
-    if (user) {
+    const passwordMatch = await bcrypt.compare(password, response.password);
+
+    if (passwordMatch) {
         const token = jwt.sign(
-            { id: user._id.toString() },
+            { id: response._id.toString() },
             JWT_SECRET
         );
 
