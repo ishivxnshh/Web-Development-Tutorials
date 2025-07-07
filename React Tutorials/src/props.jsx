@@ -31,3 +31,5 @@ function Card({ children }) {
 }
 
 export default App
+
+// prop drilling is the process of passing data from a parent component to a child component through props. This can lead to a situation where you have to pass props through many layers of components, even if those components don't need the data themselves. This can make your code harder to maintain and understand.
