@@ -49,7 +49,6 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  let [counterVisible, setCounterVisible] = useState(true);
   const [count, setCount] = useState(0);
   const [count2, setCount2] = useState(0);
 

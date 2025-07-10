@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import useDebounce from "./customHooks/useDebounce";
+import React from 'react'
+import ProfilePage from './jhkjn/ProfilePage'
 
-function App() {
-    return (
-        <div>
-            <input type="text" onChange={change} />
-        </div>
-    );
+const App = () => {
+  return (
+    <div>
+        <ProfilePage></ProfilePage>
+    </div>
+  )
 }
 
-export default App;
+export default App
